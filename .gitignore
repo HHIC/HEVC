@@ -11,3 +11,28 @@
 *.lai
 *.la
 *.a
+
+#HEVC
+#Compiled Object files
+*.obj
+#Compiled Dynamic libraries
+*.dll
+#Compiled Static libraries
+*.lib
+#Executables
+*.exe
+#User-specific files
+*.user
+#Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+[Ww]in32/
+
+*.ilk
+*.obj
+*.pdb
+*.log
+*.sdf
