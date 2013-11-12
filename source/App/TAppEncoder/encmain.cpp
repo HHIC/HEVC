@@ -55,11 +55,10 @@ int main(int argc, char* argv[])
   TAppEncTop  cTAppEncTop;
 
   // print information
+  fprintf(stdout, "\n");
 #if PRINT_INFO
-  fprintf( stdout, "\n" );
+  fprintf(stdout, "Current Version Author: [%s]", AUTHORS);
 #endif
-  
-  fprintf( stdout, "Current Version Author: [%s]", AUTHORS);
   fprintf( stdout, "\n" );
   fprintf( stdout, "HM software: Encoder Version [%s]", NV_VERSION );
   fprintf( stdout, NVM_ONOS );
