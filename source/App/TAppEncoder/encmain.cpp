@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
   fprintf(stdout, "\n");
 #if PRINT_INFO
   fprintf(stdout, "Current Version Author: [%s]", AUTHORS);
+  fprintf(stdout, "\n");
 #endif
   fprintf( stdout, "\n" );
   fprintf( stdout, "HM software: Encoder Version [%s]", NV_VERSION );
