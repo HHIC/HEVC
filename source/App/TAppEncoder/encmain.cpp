@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
   // print information
 #if PRINT_INFO
-  fprintf( stdout, "\n", );
+  fprintf( stdout, "\n" );
 #endif
   
   fprintf( stdout, "Current Version Author: [%s]", AUTHORS);
