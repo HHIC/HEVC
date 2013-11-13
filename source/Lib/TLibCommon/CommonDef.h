@@ -58,6 +58,7 @@
 #define NV_VERSION        "12.1"                 ///< Current software version
 #define AUTHORS           "Sun Heng"             ///< The Author
 #define PRINT_INFO        1                      ///< Print out statistics information
+#define PRINT_HEADER_BITS 1                      ///< Print out header bits of a frame
 // ====================================================================================================================
 // Platform information
 // ====================================================================================================================
