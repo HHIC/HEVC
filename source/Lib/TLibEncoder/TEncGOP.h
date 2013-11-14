@@ -178,6 +178,11 @@ protected:
     m_nestedPictureTimingSEIPresentInAU      = false;
   }
   Void dblMetric( TComPic* pcPic, UInt uiNumSlices );
+
+#if PRINT_HEADER_BITS
+  public:
+	Void xPrintHeaderBits(Int headerBits);
+#endif
 };// END CLASS DEFINITION TEncGOP
 
 // ====================================================================================================================

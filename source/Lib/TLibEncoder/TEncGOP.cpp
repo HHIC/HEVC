@@ -1617,7 +1617,9 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
       AccessUnit::iterator it = find_if(accessUnit.begin(), accessUnit.end(), mem_fun(&NALUnit::isSlice));
       accessUnit.insert(it, new NALUnitEBSP(nalu));
     }
-    
+#if PRINT_HEADER_BITS
+	xPrintHeaderBits(actualHeadBits);
+#endif
     xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime );
     
     //In case of field coding, compute the interlaced PSNR for both fields
@@ -2134,7 +2136,12 @@ static const Char* nalUnitTypeToString(NalUnitType type)
   }
 }
 #endif
-
+#if PRINT_HEADER_BITS
+Void TEncGOP::xPrintHeaderBits(Int headerBits)
+{
+	printf(" %5d bits ", headerBits);
+}
+#endif
 Void TEncGOP::xCalculateAddPSNR( TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit& accessUnit, Double dEncTime )
 {
   Int     x, y;
