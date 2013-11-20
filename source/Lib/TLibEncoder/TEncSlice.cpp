@@ -962,6 +962,24 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
       pppcRDSbacCoder->setBinsCoded( 0 );
       m_pcCuEncoder->encodeCU( pcCU );
 
+#if PRINT_FRAME_NONZEROS
+	  Int currCUNumNonzero = 0;
+	  Int CUMaxWidth       = pcCU->getPic()->getPicSym()->getMaxCUWidth();
+	  Int CUMaxHeight      = pcCU->getPic()->getPicSym()->getMaxCUHeight();
+
+	  Int cuCoeffIndex = 0;
+	  for (; cuCoeffIndex < CUMaxHeight * CUMaxWidth; cuCoeffIndex++)
+	  {
+		  TCoeff currCoeff = pcCU->getCoeffY()[cuCoeffIndex];
+		  if (currCoeff != (TCoeff)0)
+		  {
+			  currCUNumNonzero++;
+		  }
+	  }
+
+	  pcCU->getPic()->calcNumNonzero(currCUNumNonzero);
+#endif
+
       pppcRDSbacCoder->setBinCountingEnableFlag( false );
       if (m_pcCfg->getSliceMode()==FIXED_NUMBER_OF_BYTES && ( ( pcSlice->getSliceBits() + m_pcEntropyCoder->getNumberOfWrittenBits() ) ) > m_pcCfg->getSliceArgument()<<3)
       {

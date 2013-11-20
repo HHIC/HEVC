@@ -183,6 +183,10 @@ protected:
   public:
 	Void xPrintHeaderBits(Int headerBits);
 #endif
+
+#if PRINT_FRAME_NONZEROS
+	Void xPrintNumNonzeroFrame(Int numNonzeroFrame);
+#endif
 };// END CLASS DEFINITION TEncGOP
 
 // ====================================================================================================================

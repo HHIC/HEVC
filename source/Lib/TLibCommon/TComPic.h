@@ -191,6 +191,17 @@ public:
    * Pointer is valid until this->destroy() is called */
   const SEIMessages& getSEIs() const { return m_SEIs; }
 
+#if PRINT_FRAME_NONZEROS
+  private:
+	  Int m_numNonzero;
+	  
+  public:
+	  Void initNumNonzero()                     { m_numNonzero = 0; }
+	  Int  getNumNonzero ()                     { return m_numNonzero; }
+	  Void calcNumNonzero(Int currCuNumNonzero) { m_numNonzero += currCuNumNonzero; }
+
+#endif
+
 };// END CLASS DEFINITION TComPic
 
 //! \}

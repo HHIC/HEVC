@@ -1620,6 +1620,9 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
 #if PRINT_HEADER_BITS
 	xPrintHeaderBits(actualHeadBits);
 #endif
+#if PRINT_FRAME_NONZEROS
+	xPrintNumNonzeroFrame(pcPic->getNumNonzero());
+#endif
     xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime );
     
     //In case of field coding, compute the interlaced PSNR for both fields
@@ -2139,7 +2142,14 @@ static const Char* nalUnitTypeToString(NalUnitType type)
 #if PRINT_HEADER_BITS
 Void TEncGOP::xPrintHeaderBits(Int headerBits)
 {
-	printf(" %5d bits ", headerBits);
+	printf(" Header Bits: %5d bits ", headerBits);
+}
+#endif
+
+#if PRINT_FRAME_NONZEROS
+Void TEncGOP::xPrintNumNonzeroFrame(Int numNonzeroFrame)
+{
+	printf(" Nonzero Coeffs: %6d ", numNonzeroFrame);
 }
 #endif
 Void TEncGOP::xCalculateAddPSNR( TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit& accessUnit, Double dEncTime )

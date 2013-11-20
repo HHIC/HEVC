@@ -156,6 +156,10 @@ public:
   SAOParam *getSaoParam() { return m_saoParam; }
 #endif
 
+#if PRINT_FRAME_NONZEROS
+  Int getMaxCUWidth () { return m_uiMaxCUWidth; }
+  Int getMaxCUHeight() { return m_uiMaxCUHeight; }
+#endif
 
 };// END CLASS DEFINITION TComPicSym
 
