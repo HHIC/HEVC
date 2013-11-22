@@ -59,7 +59,8 @@
 #define AUTHORS           "Sun Heng"             ///< The Author
 #define PRINT_INFO        1                      ///< Print out statistics information
 #define PRINT_HEADER_BITS 1                      ///< Print out header bits of a frame
-#define PRINT_FRAME_NONZEROS 1                   ///< Print out number of non zeros of a frame 
+#define PRINT_FRAME_NONZEROS 1                   ///< Print out number of non zeros of a frame
+#define PRINT_4x4CU_MV       1                   ///< Print out the motion vector of each 4x4 blocks
 // ====================================================================================================================
 // Platform information
 // ====================================================================================================================

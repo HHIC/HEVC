@@ -962,6 +962,16 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
       pppcRDSbacCoder->setBinsCoded( 0 );
       m_pcCuEncoder->encodeCU( pcCU );
 
+#if PRINT_4x4CU_MV
+	  Int mvHor = 0;
+	  Int mvVer = 0;
+	  Int cuNum = pcCU->getTotalNumPart();
+
+	  for (Int cuIndex = 0; cuIndex < cuNum; cuIndex++)
+	  {
+	  }
+#endif
+
 #if PRINT_FRAME_NONZEROS
 	  Int currCUNumNonzero = 0;
 	  Int CUMaxWidth       = pcCU->getPic()->getPicSym()->getMaxCUWidth();
