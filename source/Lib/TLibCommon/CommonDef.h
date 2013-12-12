@@ -59,7 +59,6 @@
 #define AUTHORS           "Sun Heng"             ///< The Author
 #define PRINT_INFO        1                      ///< Print out statistics information
 #define PRINT_HEADER_BITS 1                      ///< Print out header bits of a frame
-#define PRINT_HEADER_BITS_SUMMARY 1              ///< Print out header bits of a frame type and all frame
 #define USE_RELATIONSHIP_BITRATE_QSTEP 1         ///< Use quantization step size instead of quantization parameter
 #define PRINT_QSTEP_QP_INFO  1                   ///< Print out the quantization parameter and the quantization stepsize
 #define PRINT_FRAME_NONZEROS 1                   ///< Print out number of non zeros of a frame
