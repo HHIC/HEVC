@@ -72,30 +72,10 @@ private:
 public:
   //TEncAnalyze() { m_dPSNRSumY = m_dPSNRSumU = m_dPSNRSumV = m_dAddBits = m_uiNumPic = 0;  }
 
-#if PRINT_HEADER_BITS_SUMMARY
-	TEncAnalyze()
-	{
-		m_dPSNRSumY = m_dPSNRSumU = m_dPSNRSumV = m_dAddBits = m_dAddHeaderBits = 0.0;
-		m_uiNumPic = 0;
-	}
-#else
 	TEncAnalyze() { m_dPSNRSumY = m_dPSNRSumU = m_dPSNRSumV = m_dAddBits = m_uiNumPic = 0; }
-#endif
 
   virtual ~TEncAnalyze()  {}
-  
-#if PRINT_HEADER_BITS_SUMMARY
-  Void  addResult( Double psnrY, Double psnrU, Double psnrV, Double bits, Double headerBits)
-  {
-    m_dPSNRSumY += psnrY;
-    m_dPSNRSumU += psnrU;
-    m_dPSNRSumV += psnrV;
-    m_dAddBits  += bits;
-	m_dAddHeaderBits += headerBits;
-    
-    m_uiNumPic++;
-  }
-#else
+
   Void  addResult(Double psnrY, Double psnrU, Double psnrV, Double bits)
   {
 	  m_dPSNRSumY += psnrY;
@@ -105,7 +85,6 @@ public:
 
 	  m_uiNumPic++;
   }
-#endif
   
   Double  getPsnrY()  { return  m_dPSNRSumY;  }
   Double  getPsnrU()  { return  m_dPSNRSumU;  }
@@ -121,33 +100,9 @@ public:
 #endif
   
   Void    setFrmRate  (Double dFrameRate) { m_dFrmRate = dFrameRate; } //--CFG_KDY
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    clear()
-  { 
-	m_dPSNRSumY = m_dPSNRSumU = m_dPSNRSumV = m_dAddBits = m_dAddHeaderBits = 0.0;
-	m_uiNumPic  = 0;
-  }
-#else
+
   Void    clear() { m_dPSNRSumY = m_dPSNRSumU = m_dPSNRSumV = m_dAddBits = m_uiNumPic = 0; }
-#endif
 
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    printOut ( Char cDelim )
-  {
-	  Double dFps     =   m_dFrmRate; //--CFG_KDY
-	  Double dScale   = dFps / 1000 / (Double)m_uiNumPic;
-
-	  printf( "\tTotal Frames |  "   "Bitrate    "  "Y-PSNR    "  "U-PSNR    "  "V-PSNR    " "Header Bitrate \n" );
-	  //printf( "\t------------ "  " ----------"   " -------- "  " -------- "  " -------- "  " --------\n" );
-	  printf( "\t %8d    %c"          "%12.4lf  "    "%8.4lf  "   "%8.4lf  "    "%8.4lf\n"    "%8.4lf\n",
-		  getNumPic(), cDelim,
-		  getBits() * dScale,
-		  getPsnrY() / (Double)getNumPic(),
-		  getPsnrU() / (Double)getNumPic(),
-		  getPsnrV() / (Double)getNumPic(),
-		  getHeaderBits() * dScale);
-  }
-#else
   Void    printOut(Char cDelim)
   {
 	  Double dFps = m_dFrmRate; //--CFG_KDY
@@ -162,23 +117,7 @@ public:
 		  getPsnrU() / (Double)getNumPic(),
 		  getPsnrV() / (Double)getNumPic());
   }
-#endif
   
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    printSummaryOut ()
-  {
-    FILE* pFile = fopen ("summaryTotal.txt", "at");
-    Double dFps     =   m_dFrmRate; //--CFG_KDY
-    Double dScale   = dFps / 1000 / (Double)m_uiNumPic;
-    
-    fprintf(pFile, "%f\t %f\t %f\t %f\t %f\n", getBits() * dScale,
-            getPsnrY() / (Double)getNumPic(),
-            getPsnrU() / (Double)getNumPic(),
-            getPsnrV() / (Double)getNumPic(),
-			getHeaderBits() * dScale);
-    fclose(pFile);
-  }
-#else
   Void    printSummaryOut()
   {
 	  FILE* pFile = fopen("summaryTotal.txt", "at");
@@ -191,25 +130,7 @@ public:
 		  getPsnrV() / (Double)getNumPic());
 	  fclose(pFile);
   }
-#endif
   
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    printOutInterlaced ( Char cDelim, Double bits , Double headerBits)
-  {
-	  Double dFps = m_dFrmRate; //--CFG_KDY
-	  Double dScale = dFps / 1000 / (Double)m_uiNumPic;
-
-	  printf("\tTotal Frames |  "   "Bitrate    "  "Y-PSNR    "  "U-PSNR    "  "V-PSNR  " "Header Bitrate \n");
-	  //printf( "\t------------ "  " ----------"   " -------- "  " -------- "  " -------- "  " --------\n" );
-	  printf("\t %8d    %c"          "%12.4lf  "    "%8.4lf  "   "%8.4lf  "    "%8.4lf"    "%8.4lf\n",
-		  getNumPic(), cDelim,
-		  bits * dScale,
-		  getPsnrY() / (Double)getNumPic(),
-		  getPsnrU() / (Double)getNumPic(),
-		  getPsnrV() / (Double)getNumPic(),
-		  headerBits * dScale);
-  }
-#else
   Void    printOutInterlaced(Char cDelim, Double bits)
   {
 	  Double dFps = m_dFrmRate; //--CFG_KDY
@@ -224,23 +145,7 @@ public:
 		  getPsnrU() / (Double)getNumPic(),
 		  getPsnrV() / (Double)getNumPic());
   }
-#endif
 
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    printSummaryOutInterlaced (Int bits, Double headerBits)
-  {
-	  FILE* pFile = fopen("summaryTotal.txt", "at");
-	  Double dFps = m_dFrmRate; //--CFG_KDY
-	  Double dScale = dFps / 1000 / (Double)m_uiNumPic;
-
-	  fprintf(pFile, "%f\t %f\t %f\t %f\t %f\n", bits * dScale,
-		  getPsnrY() / (Double)getNumPic(),
-		  getPsnrU() / (Double)getNumPic(),
-		  getPsnrV() / (Double)getNumPic(),
-		  headerBits * dScale);
-	  fclose(pFile);
-  }
-#else
   Void    printSummaryOutInterlaced(Int bits)
   {
 	  FILE* pFile = fopen("summaryTotal.txt", "at");
@@ -253,43 +158,7 @@ public:
 		  getPsnrV() / (Double)getNumPic());
 	  fclose(pFile);
   }
-#endif
   
-#if PRINT_HEADER_BITS_SUMMARY
-  Void    printSummary(Char ch)
-  {
-    FILE* pFile = NULL;
-    
-    switch( ch ) 
-    {
-      case 'I':
-        pFile = fopen ("summary_I.txt", "at");
-        break;
-      case 'P':
-        pFile = fopen ("summary_P.txt", "at");
-        break;
-      case 'B':
-        pFile = fopen ("summary_B.txt", "at");
-        break;
-      default:
-        assert(0);
-        return;
-        break;
-    }
-    
-    Double dFps     =   m_dFrmRate; //--CFG_KDY
-    Double dScale   = dFps / 1000 / (Double)m_uiNumPic;
-    
-    fprintf(pFile, "%f\t %f\t %f\t %f\t %f\n",
-            getBits() * dScale,
-            getPsnrY() / (Double)getNumPic(),
-            getPsnrU() / (Double)getNumPic(),
-            getPsnrV() / (Double)getNumPic(),
-			getHeaderBits() * dScale);
-    
-    fclose(pFile);
-  }
-#else
   Void    printSummary(Char ch)
   {
 	  FILE* pFile = NULL;
@@ -322,7 +191,6 @@ public:
 
 	  fclose(pFile);
   }
-#endif
 };
 
 extern TEncAnalyze             m_gcAnalyzeAll;
