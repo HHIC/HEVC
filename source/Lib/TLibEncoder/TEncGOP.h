@@ -151,9 +151,18 @@ protected:
   Void  xInitGOP          ( Int iPOC, Int iNumPicRcvd, TComList<TComPic*>& rcListPic, TComList<TComPicYuv*>& rcListPicYuvRecOut );
   Void  xGetBuffer        ( TComList<TComPic*>& rcListPic, TComList<TComPicYuv*>& rcListPicYuvRecOut, Int iNumPicRcvd, Int iTimeOffset, TComPic*& rpcPic, TComPicYuv*& rpcPicYuvRecOut, Int pocCurr, bool isField );
   
+#if PRINT_HEADER_BITS_SUMMARY
+  Void  xCalculateAddPSNR ( TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit&, Double dEncTime, Double headerBits );
+  Void  xCalculateInterlacedAddPSNR( TComPic* pcPicOrgTop, TComPic* pcPicOrgBottom, TComPicYuv* pcPicRecTop, TComPicYuv* pcPicRecBottom, const AccessUnit& accessUnit, Double dEncTime, Double headerBits );
+#else
   Void  xCalculateAddPSNR ( TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit&, Double dEncTime );
   Void  xCalculateInterlacedAddPSNR( TComPic* pcPicOrgTop, TComPic* pcPicOrgBottom, TComPicYuv* pcPicRecTop, TComPicYuv* pcPicRecBottom, const AccessUnit& accessUnit, Double dEncTime );
-  
+#endif  
+
+#if USE_RELATIONSHIP_BITRATE_QSTEP
+  Double xConvertQP2QStep(Int qp);
+#endif
+
   UInt64 xFindDistortionFrame (TComPicYuv* pcPic0, TComPicYuv* pcPic1);
 
   Double xCalculateRVM();
@@ -182,6 +191,10 @@ protected:
 #if PRINT_HEADER_BITS
   public:
 	Void xPrintHeaderBits(Int headerBits);
+#endif
+
+#if PRINT_QSTEP_QP_INFO
+	Void xPrintQPAndQStep(Int qp);
 #endif
 
 #if PRINT_FRAME_NONZEROS

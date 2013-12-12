@@ -1624,7 +1624,12 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
 #if PRINT_FRAME_NONZEROS
 	xPrintNumNonzeroFrame(pcPic->getNumNonzero());
 #endif
+
+#if PRINT_HEADER_BITS_SUMMARY
+	xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime, actualHeadBits );
+#else
     xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime );
+#endif
     
     //In case of field coding, compute the interlaced PSNR for both fields
     if (isField && ((!pcPic->isTopField() && isTff) || (pcPic->isTopField() && !isTff)))
@@ -1637,7 +1642,11 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
         iterPic ++;
       }
       pcPicTop = *(iterPic);
+#if PRINT_HEADER_BITS_SUMMARY
+	  xCalculateInterlacedAddPSNR(pcPicTop, pcPic, pcPicTop->getPicYuvRec(), pcPic->getPicYuvRec(), accessUnit, dEncTime, actualHeadBits );
+#else
       xCalculateInterlacedAddPSNR(pcPicTop, pcPic, pcPicTop->getPicYuvRec(), pcPic->getPicYuvRec(), accessUnit, dEncTime );
+#endif
     }
     
     if (digestStr)
@@ -1912,7 +1921,12 @@ Void TEncGOP::printOutSummary(UInt uiNumAllPicCoded, bool isField)
     //-- interlaced summary
     m_gcAnalyzeAll_in.setFrmRate( m_pcCfg->getFrameRate());
     printf( "\n\nSUMMARY INTERLACED ---------------------------------------------\n" );
+
+#if PRINT_HEADER_BITS_SUMMARY
+	m_gcAnalyzeAll_in.printSummaryOutInterlaced('a', m_gcAnalyzeAll.getHeaderBits());
+#else
     m_gcAnalyzeAll_in.printOutInterlaced('a',  m_gcAnalyzeAll.getBits());
+#endif
     
 #if _SUMMARY_OUT_
     m_gcAnalyzeAll_in.printSummaryOutInterlaced();
@@ -2147,13 +2161,42 @@ Void TEncGOP::xPrintHeaderBits(Int headerBits)
 }
 #endif
 
+#if USE_RELATIONSHIP_BITRATE_QSTEP
+Double TEncGOP::xConvertQP2QStep(Int qp)
+{
+	Double qStep;
+	static const Double mapQP2QSTEP[6] = {0.625, 0.703, 0.797, 0.891, 1.000, 1.125};
+
+	qStep = mapQP2QSTEP[qp % 6];
+	for (Int i = 0; i < (qp / 6); i++)
+	{
+		qStep *= 2;
+	}
+
+	return qStep;
+}
+#endif
+
+#if PRINT_QSTEP_QP_INFO
+Void TEncGOP::xPrintQPAndQStep(Int qp)
+{
+	Double qStep = xConvertQP2QStep(qp);
+	printf(" QP: %6d QStep: %6.4ld", qp, qStep);
+}
+#endif
+
 #if PRINT_FRAME_NONZEROS
 Void TEncGOP::xPrintNumNonzeroFrame(Int numNonzeroFrame)
 {
 	printf(" Nonzero Coeffs: %6d ", numNonzeroFrame);
 }
 #endif
+
+#if PRINT_HEADER_BITS_SUMMARY
+Void TEncGOP::xCalculateAddPSNR(TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit& accessUnit, Double dEncTime, Double headerBits)
+#else
 Void TEncGOP::xCalculateAddPSNR( TComPic* pcPic, TComPicYuv* pcPicD, const AccessUnit& accessUnit, Double dEncTime )
+#endif
 {
   Int     x, y;
   UInt64 uiSSDY  = 0;
@@ -2248,19 +2291,35 @@ Void TEncGOP::xCalculateAddPSNR( TComPic* pcPic, TComPicYuv* pcPicD, const Acces
   m_vRVM_RP.push_back( uibits );
 
   //===== add PSNR =====
-  m_gcAnalyzeAll.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits);
+#if PRINT_HEADER_BITS_SUMMARY
+  m_gcAnalyzeAll.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits, headerBits);
+#else
+  m_gcAnalyzeAll.addResult(dYPSNR, dUPSNR, dVPSNR, (Double)uibits);
+#endif
   TComSlice*  pcSlice = pcPic->getSlice(0);
   if (pcSlice->isIntra())
   {
+#if PRINT_HEADER_BITS_SUMMARY
+	m_gcAnalyzeAll.addResult(dYPSNR, dUPSNR, dVPSNR, (Double)uibits, headerBits);
+#else
     m_gcAnalyzeI.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits);
+#endif
   }
   if (pcSlice->isInterP())
   {
+#if PRINT_HEADER_BITS_SUMMARY
+	m_gcAnalyzeP.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits, headerBits);
+#else
     m_gcAnalyzeP.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits);
+#endif
   }
   if (pcSlice->isInterB())
   {
+#if PRINT_HEADER_BITS_SUMMARY
+	m_gcAnalyzeB.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits, headerBits);
+#else
     m_gcAnalyzeB.addResult (dYPSNR, dUPSNR, dVPSNR, (Double)uibits);
+#endif
   }
 
   Char c = (pcSlice->isIntra() ? 'I' : pcSlice->isInterP() ? 'P' : 'B');
@@ -2313,7 +2372,11 @@ Void reinterlace(Pel* top, Pel* bottom, Pel* dst, UInt stride, UInt width, UInt 
   }
 }
 
+#if PRINT_HEADER_BITS_SUMMARY
+Void TEncGOP::xCalculateInterlacedAddPSNR( TComPic* pcPicOrgTop, TComPic* pcPicOrgBottom, TComPicYuv* pcPicRecTop, TComPicYuv* pcPicRecBottom, const AccessUnit& accessUnit, Double dEncTime, Double headerBits )
+#else
 Void TEncGOP::xCalculateInterlacedAddPSNR( TComPic* pcPicOrgTop, TComPic* pcPicOrgBottom, TComPicYuv* pcPicRecTop, TComPicYuv* pcPicRecBottom, const AccessUnit& accessUnit, Double dEncTime )
+#endif
 {
   Int     x, y;
   
@@ -2445,7 +2508,11 @@ Void TEncGOP::xCalculateInterlacedAddPSNR( TComPic* pcPicOrgTop, TComPic* pcPicO
   UInt uibits = numRBSPBytes * 8 ;
   
   //===== add PSNR =====
+#if PRINT_HEADER_BITS_SUMMARY
+  m_gcAnalyzeAll_in.addResult (dYPSNR_in, dUPSNR_in, dVPSNR_in, (Double)uibits, headerBits);
+#else
   m_gcAnalyzeAll_in.addResult (dYPSNR_in, dUPSNR_in, dVPSNR_in, (Double)uibits);
+#endif
   
   printf("\n                                      Interlaced frame %d: [Y %6.4lf dB    U %6.4lf dB    V %6.4lf dB]", pcPicOrgBottom->getPOC()/2 , dYPSNR_in, dUPSNR_in, dVPSNR_in );
   
