@@ -195,6 +195,10 @@ protected:
 #if PRINT_FRAME_NONZEROS
 	Void xPrintNumNonzeroFrame(Int numNonzeroFrame);
 #endif
+
+#if PRINT__FRAME_SATD
+	Void xPrintFrameDistSATD(UInt frameDist);
+#endif
 };// END CLASS DEFINITION TEncGOP
 
 // ====================================================================================================================

@@ -972,6 +972,11 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
 	  }
 #endif
 
+#if USE_SATD
+	  UInt currCUDist = pcCU->getTotalDistortion();
+	  pcCU->getPic()->calcFrameDist(currCUDist);
+#endif
+
 #if PRINT_FRAME_NONZEROS
 	  Int currCUNumNonzero = 0;
 	  Int CUMaxWidth       = pcCU->getPic()->getPicSym()->getMaxCUWidth();

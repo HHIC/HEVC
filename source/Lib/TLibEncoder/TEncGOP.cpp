@@ -1618,6 +1618,9 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
       AccessUnit::iterator it = find_if(accessUnit.begin(), accessUnit.end(), mem_fun(&NALUnit::isSlice));
       accessUnit.insert(it, new NALUnitEBSP(nalu));
     }
+#if PRINT__FRAME_SATD
+	xPrintFrameDistSATD(pcPic->getFrameDist());
+#endif
 #if PRINT_HEADER_BITS
 	xPrintHeaderBits(actualHeadBits);
 #endif
@@ -2177,6 +2180,13 @@ Void TEncGOP::xPrintQPAndQStep(Int qp)
 Void TEncGOP::xPrintNumNonzeroFrame(Int numNonzeroFrame)
 {
 	printf(" Nonzero Coeffs: %6d ", numNonzeroFrame);
+}
+#endif
+
+#if PRINT__FRAME_SATD
+Void TEncGOP::xPrintFrameDistSATD(UInt frameDist)
+{
+	printf(" SATD: %10d ", frameDist);
 }
 #endif
 

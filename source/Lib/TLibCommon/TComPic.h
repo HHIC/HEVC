@@ -202,6 +202,16 @@ public:
 
 #endif
 
+#if USE_SATD
+	  private:
+		  UInt m_frameDist;
+		  
+	  public:
+		  Void initFrameDist()                  { m_frameDist = 0; }
+		  UInt getFrameDist()                   { return m_frameDist; }
+		  Void calcFrameDist(UInt cuDist)       { m_frameDist += cuDist; }
+#endif
+
 };// END CLASS DEFINITION TComPic
 
 //! \}
