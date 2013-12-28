@@ -62,6 +62,7 @@
 #define USE_RELATIONSHIP_BITRATE_QSTEP 1         ///< Use quantization step size instead of quantization parameter
 #define USE_SATD          1                      ///< Use SATD to describe the complexity of current transform unit
 #define PRINT__FRAME_SATD 1                      ///< Print out the frame distortion described by SATD
+#define PRINT__FRAME_TEXTTURE_BIT 1              ///< Print out the frame texture bit 
 #define PRINT_QSTEP_QP_INFO  1                   ///< Print out the quantization parameter and the quantization stepsize
 #define PRINT_FRAME_NONZEROS 1                   ///< Print out number of non zeros of a frame
 #define PRINT_4x4CU_MV       1                   ///< Print out the motion vector of each 4x4 blocks

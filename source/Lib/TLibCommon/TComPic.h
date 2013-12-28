@@ -191,27 +191,6 @@ public:
    * Pointer is valid until this->destroy() is called */
   const SEIMessages& getSEIs() const { return m_SEIs; }
 
-#if PRINT_FRAME_NONZEROS
-  private:
-	  Int m_numNonzero;
-	  
-  public:
-	  Void initNumNonzero()                     { m_numNonzero = 0; }
-	  Int  getNumNonzero ()                     { return m_numNonzero; }
-	  Void calcNumNonzero(Int currCuNumNonzero) { m_numNonzero += currCuNumNonzero; }
-
-#endif
-
-#if USE_SATD
-	  private:
-		  UInt m_frameDist;
-		  
-	  public:
-		  Void initFrameDist()                  { m_frameDist = 0; }
-		  UInt getFrameDist()                   { return m_frameDist; }
-		  Void calcFrameDist(UInt cuDist)       { m_frameDist += cuDist; }
-#endif
-
 };// END CLASS DEFINITION TComPic
 
 //! \}

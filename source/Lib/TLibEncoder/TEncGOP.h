@@ -185,7 +185,7 @@ protected:
 
 #if PRINT_HEADER_BITS
   public:
-	Void xPrintHeaderBits(Int headerBits);
+	Void xPrintHeaderBits(UInt64 headerBits);
 #endif
 
 #if PRINT_QSTEP_QP_INFO
@@ -193,11 +193,15 @@ protected:
 #endif
 
 #if PRINT_FRAME_NONZEROS
-	Void xPrintNumNonzeroFrame(Int numNonzeroFrame);
+	Void xPrintNumNonzeroFrame(UInt64 numNonzeroFrame);
 #endif
 
 #if PRINT__FRAME_SATD
-	Void xPrintFrameDistSATD(UInt frameDist);
+	Void xPrintFrameDistSATD(UInt64 frameDist);
+#endif
+
+#if PRINT__FRAME_TEXTTURE_BIT
+	Void xPrintFrameTextureBits(UInt64 frameTextureBits);
 #endif
 };// END CLASS DEFINITION TEncGOP
 

@@ -67,14 +67,6 @@ TComPic::TComPic()
 {
   m_apcPicYuv[0]      = NULL;
   m_apcPicYuv[1]      = NULL;
-
-#if PRINT_FRAME_NONZEROS
-  initNumNonzero();
-#endif
-
-#if USE_SATD
-  initFrameDist();
-#endif
 }
 
 TComPic::~TComPic()

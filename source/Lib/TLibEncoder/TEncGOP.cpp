@@ -1618,15 +1618,6 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
       AccessUnit::iterator it = find_if(accessUnit.begin(), accessUnit.end(), mem_fun(&NALUnit::isSlice));
       accessUnit.insert(it, new NALUnitEBSP(nalu));
     }
-#if PRINT__FRAME_SATD
-	xPrintFrameDistSATD(pcPic->getFrameDist());
-#endif
-#if PRINT_HEADER_BITS
-	xPrintHeaderBits(actualHeadBits);
-#endif
-#if PRINT_FRAME_NONZEROS
-	xPrintNumNonzeroFrame(pcPic->getNumNonzero());
-#endif
 
     xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime );
     
@@ -2146,7 +2137,7 @@ static const Char* nalUnitTypeToString(NalUnitType type)
 }
 #endif
 #if PRINT_HEADER_BITS
-Void TEncGOP::xPrintHeaderBits(Int headerBits)
+Void TEncGOP::xPrintHeaderBits(UInt64 headerBits)
 {
 	printf(" Header Bits: %5d bits ", headerBits);
 }
@@ -2177,16 +2168,23 @@ Void TEncGOP::xPrintQPAndQStep(Int qp)
 #endif
 
 #if PRINT_FRAME_NONZEROS
-Void TEncGOP::xPrintNumNonzeroFrame(Int numNonzeroFrame)
+Void TEncGOP::xPrintNumNonzeroFrame(UInt64 numNonzeroFrame)
 {
 	printf(" Nonzero Coeffs: %6d ", numNonzeroFrame);
 }
 #endif
 
 #if PRINT__FRAME_SATD
-Void TEncGOP::xPrintFrameDistSATD(UInt frameDist)
+Void TEncGOP::xPrintFrameDistSATD(UInt64 frameDist)
 {
 	printf(" SATD: %10d ", frameDist);
+}
+#endif
+
+#if PRINT__FRAME_TEXTTURE_BIT
+Void TEncGOP::xPrintFrameTextureBits(UInt64 frameTextureBits)
+{
+	printf(" Frame Texture Bits: %10d ", frameTextureBits);
 }
 #endif
 

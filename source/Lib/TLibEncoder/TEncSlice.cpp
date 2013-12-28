@@ -962,39 +962,6 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
       pppcRDSbacCoder->setBinsCoded( 0 );
       m_pcCuEncoder->encodeCU( pcCU );
 
-#if PRINT_4x4CU_MV
-	  Int mvHor = 0;
-	  Int mvVer = 0;
-	  Int cuNum = pcCU->getTotalNumPart();
-
-	  for (Int cuIndex = 0; cuIndex < cuNum; cuIndex++)
-	  {
-	  }
-#endif
-
-#if USE_SATD
-	  UInt currCUDist = pcCU->getTotalDistortion();
-	  pcCU->getPic()->calcFrameDist(currCUDist);
-#endif
-
-#if PRINT_FRAME_NONZEROS
-	  Int currCUNumNonzero = 0;
-	  Int CUMaxWidth       = pcCU->getPic()->getPicSym()->getMaxCUWidth();
-	  Int CUMaxHeight      = pcCU->getPic()->getPicSym()->getMaxCUHeight();
-
-	  Int cuCoeffIndex = 0;
-	  for (; cuCoeffIndex < CUMaxHeight * CUMaxWidth; cuCoeffIndex++)
-	  {
-		  TCoeff currCoeff = pcCU->getCoeffY()[cuCoeffIndex];
-		  if (currCoeff != (TCoeff)0)
-		  {
-			  currCUNumNonzero++;
-		  }
-	  }
-
-	  pcCU->getPic()->calcNumNonzero(currCUNumNonzero);
-#endif
-
       pppcRDSbacCoder->setBinCountingEnableFlag( false );
       if (m_pcCfg->getSliceMode()==FIXED_NUMBER_OF_BYTES && ( ( pcSlice->getSliceBits() + m_pcEntropyCoder->getNumberOfWrittenBits() ) ) > m_pcCfg->getSliceArgument()<<3)
       {
@@ -1067,6 +1034,7 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
     m_uiPicTotalBits += pcCU->getTotalBits();
     m_dPicRdCost     += pcCU->getTotalCost();
     m_uiPicDist      += pcCU->getTotalDistortion();
+
   }
   if ((pcSlice->getPPS()->getNumSubstreams() > 1) && !depSliceSegmentsEnabled)
   {
