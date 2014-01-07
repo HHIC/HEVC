@@ -1618,7 +1618,15 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
       AccessUnit::iterator it = find_if(accessUnit.begin(), accessUnit.end(), mem_fun(&NALUnit::isSlice));
       accessUnit.insert(it, new NALUnitEBSP(nalu));
     }
+#if COMPUTE_FRAME_STD_DEV
+	//xPrintFrameStdDev(pcPic->getFrameStdDev());
+#endif
 
+#if PRINT_FRAME_NONZEROS
+#endif
+
+#if PRINT__FRAME_TEXTTURE_BIT
+#endif
     xCalculateAddPSNR( pcPic, pcPic->getPicYuvRec(), accessUnit, dEncTime );
     
     //In case of field coding, compute the interlaced PSNR for both fields
@@ -2140,6 +2148,13 @@ static const Char* nalUnitTypeToString(NalUnitType type)
 Void TEncGOP::xPrintHeaderBits(UInt64 headerBits)
 {
 	printf(" Header Bits: %5d bits ", headerBits);
+}
+#endif
+
+#if COMPUTE_FRAME_STD_DEV
+Void TEncGOP::xPrintFrameStdDev(Double frameStdDev)
+{
+	printf(" Frame Standard Deviation: %.4f ", sqrt(frameStdDev));
 }
 #endif
 

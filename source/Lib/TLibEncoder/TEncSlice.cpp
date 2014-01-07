@@ -1030,7 +1030,11 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
         break;
       }
     }
-    
+
+	UInt uiCUWidth = pcCU->getAddr() % rpcPic->getFrameWidthInCU() == (rpcPic->getFrameWidthInCU() - 1) ? (m_pcCfg->getSourceWidth() - (pcCU->getAddr() % rpcPic->getFrameWidthInCU()) * rpcPic->getPicSym()->getMaxCUWidth()) : rpcPic->getPicSym()->getMaxCUWidth();
+	UInt uiCUHeight = pcCU->getAddr() / rpcPic->getFrameWidthInCU() == (rpcPic->getFrameHeightInCU() - 1) ? (m_pcCfg->getSourceHeight() - (pcCU->getAddr() / rpcPic->getFrameWidthInCU()) * rpcPic->getPicSym()->getMaxCUHeight()) : rpcPic->getPicSym()->getMaxCUHeight();
+	TCoeff* pcTrCoeffY = pcCU->getCoeffY();
+
     m_uiPicTotalBits += pcCU->getTotalBits();
     m_dPicRdCost     += pcCU->getTotalCost();
     m_uiPicDist      += pcCU->getTotalDistortion();

@@ -57,6 +57,11 @@
 
 #define NV_VERSION        "12.1"                 ///< Current software version
 #define AUTHORS           "Sun Heng"             ///< The Author
+#define COMPUTE_FRAME_STD_DEV 1                  ///< Compute frame standard deviation
+#define COMPUTE_CU_DEPTH_0    1                  ///< Compute CU depth level 0 standard deviation
+#define COMPUTE_CU_DEPTH_1    1                  ///< Compute CU depth level 1 standard deviation
+#define COMPUTE_CU_DEPTH_2    1                  ///< Compute CU depth level 2 standard deviation
+#define COMPUTE_CU_DEPTH_3    1                  ///< Compute CU depth level 3 standard deviation
 #define PRINT_INFO        1                      ///< Print out statistics information
 #define PRINT_HEADER_BITS 1                      ///< Print out header bits of a frame
 #define USE_RELATIONSHIP_BITRATE_QSTEP 1         ///< Use quantization step size instead of quantization parameter

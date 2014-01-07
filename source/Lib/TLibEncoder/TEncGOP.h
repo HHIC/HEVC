@@ -188,6 +188,10 @@ protected:
 	Void xPrintHeaderBits(UInt64 headerBits);
 #endif
 
+#if COMPUTE_FRAME_STD_DEV
+	Void xPrintFrameStdDev(Double frameStdDev);
+#endif
+
 #if PRINT_QSTEP_QP_INFO
 	Void xPrintQPAndQStep(Int qp);
 #endif
